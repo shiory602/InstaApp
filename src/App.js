@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import FetchContextProvider from "./context/Context";
-import Comments from "./components/Comments";
 import Posts from "./components/Posts";
+import NewPost from "./components/NewPost";
+import Comments from "./components/Comments";
 import { Row, Col } from "antd";
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
           <Col xs={{ span: 20 }} lg={{ span: 14 }}>
             <Switch>
               <Route path="/" exact component={Posts}/>
-            
+              <Route path="/newPost" exact component={NewPost} />
               <Route path="/comments" exact component={Comments}/>
             </Switch>
           </Col>

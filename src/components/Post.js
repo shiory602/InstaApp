@@ -98,7 +98,7 @@ const Post = () => {
             <Form.Item style={{ width: "100%" }} name="comment">
               <Input
                 value={newComment}
-                placeholder="Add comment..."
+                placeholder="Write a caption..."
                 onChange={(e) => setNewComment(e.target.value)}
                 suffix={
                   <Button
