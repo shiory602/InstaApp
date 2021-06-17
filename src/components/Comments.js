@@ -1,7 +1,7 @@
 import React from 'react';
-import { useFetchContext } from './context/Context';
+import { useFetchContext } from '../context/Context';
 
-function App() {
+function Comments() {
   const { comments } = useFetchContext();
   return (
     <>
@@ -11,4 +11,4 @@ function App() {
   );
 }
 
-export default App;
+export default Comments;
