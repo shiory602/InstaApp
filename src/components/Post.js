@@ -17,7 +17,10 @@ const Icon = styled.span`
 `;
 
 const PostAvatar = styled(Avatar)`
-  margin: 5px;
+  margin: 5px 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 `;
 
 const PostWrapper = styled.div`
@@ -42,8 +45,12 @@ const Post = () => {
   return (
     <PostWrapper>
       <Row align="middle">
-        <PostAvatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+      <Col span={2}>
+        <PostAvatar size="large" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+        </Col>
+        <Col span={22} >
         <Text> username </Text>
+        </Col>
       </Row>
       <Image
         width="100%"
@@ -82,12 +89,11 @@ const Post = () => {
 
       <Link to="/comments">View all comments</Link>
 
-      {/* <Input placeholder="Basic usage" /> */}
       <Row align='middle'>
         <Col span={2}>
-          <PostAvatar  size={{ xs: 20, sm: 32, lg: 50}} src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+          <PostAvatar  size='large' src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
         </Col>
-        <Col span={22}>
+        <Col span={22} >
           <Form name="horizontal_login" layout="inline" onFinish={onFinish}>
             <Form.Item style={{ width: "100%" }} name="comment">
               <Input
