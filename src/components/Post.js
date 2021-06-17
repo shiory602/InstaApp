@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import { Image, Row, Col, Typography, Avatar, Form, Input, Button } from "antd";
-import { HeartOutlined, MessageOutlined } from "@ant-design/icons";
-import styled from "styled-components";
 import Paragraph from "antd/lib/typography/Paragraph";
+import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
+
+import styled from "styled-components";
+
+import { useUserContext } from "../context/UserContext";
+
 const { Text } = Typography;
 
 const Icon = styled.span`
@@ -24,96 +28,118 @@ const PostAvatar = styled(Avatar)`
 `;
 
 const PostWrapper = styled.div`
-    margin: 10px 0;
-    border: 1px solid #d9d9d9;
+  margin: 10px 0;
+  border: 1px solid #d9d9d9;
 `;
-
 
 const PostDetailsWrapper = styled.div`
-    padding: 0 10px 10px 10px;
+  padding: 0 10px 10px 10px;
 `;
 
-const Post = () => {
-  const [newComment, setNewComment] = useState('');
+const PostUserWrapper = styled(Row)`
+  padding: 0 10px;
+`;
 
+const Post = ({ post }) => {
+  const { user } = useUserContext();
+
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState();
   const onFinish = () => {
     console.log("Finish:", newComment);
-    setNewComment('');
+    setNewComment("");
   };
-  console.log('render'+newComment);
-  
+  console.log("render" + newComment);
+  console.log("POST " + user);
+
+    useEffect(()=>{
+        const uri = `https://dummyapi.io/data/api/post/${post.id}/comment?limit=10`;
+        let h = new Headers();
+        h.append('app-id', '60cbc53bea9ef7bbdc44dd76');
+        let req = new Request(uri, {
+            method: 'GET',
+            headers: h,
+            mode: 'cors'
+        })
+        fetch(req).then(response => {
+            if(response.ok){
+                return response.json();
+            }
+        }).then( d => {
+            setComments(d.data);
+        }).catch( error => {
+            console.error(error);
+        })
+    },[]);
+
   return (
     <PostWrapper>
-      <Row align="middle">
-      <Col span={2}>
-        <PostAvatar size="large" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+      <PostUserWrapper align="middle">
+        <Col span={2} style={{ marginRight: "5px" }}>
+          <PostAvatar size="large" src={post.owner.picture} />
         </Col>
-        <Col span={22} >
-        <Text> username </Text>
+        <Col span={21}>
+          <Text strong> {post.owner.firstName} {post.owner.lastName}</Text>
         </Col>
-      </Row>
-      <Image
-        width="100%"
-        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-      />
+      </PostUserWrapper>
+      <Image width="100%" src={post.image} />
+      <PostDetailsWrapper>
+        <Row align="middle">
+          <Icon>
+            <HeartOutlined />
+            {/* {post.likes.includes(user.username) ? (
+              <HeartFilled />
+            ) : (
+              <HeartOutlined />
+            )} */}
+          </Icon>
+          <Icon>
+            <MessageOutlined href="/comments" />
+          </Icon>
+        </Row>
 
-<PostDetailsWrapper>
+        <Paragraph style={{ margin: 0 }}> {post.likes} likes </Paragraph>
+        <Row>
+          <Text strong style={{paddingRight: "5px"}}>{post.owner.firstName} {post.owner.lastName}</Text>
+          <Paragraph
+            style={{ margin: 0 }}
+            ellipsis={{ rows: 2, expandable: true, symbol: "more" }}
+          >
+            {post.text}
+          </Paragraph>
+        </Row>
+        <Paragraph style={{ margin: 0 }}>{post.publishDate}</Paragraph>
+        {(comments && comments.length) > 0 ? (
+          <Link to={`/${post.id}/comments`}>View all comments</Link>
+        ) : (
+          ""
+        )}
 
-      <Row align="middle">
-        <Icon>
-          {" "}
-          <HeartOutlined />{" "}
-        </Icon>
-        <Icon>
-          {" "}
-          <MessageOutlined />{" "}
-        </Icon>
-      </Row>
-
-      <Paragraph style={{ margin: 0 }}> 123 likes </Paragraph>
-      
-      <Text strong>username</Text>
-      <Paragraph
-        style={{ margin: 0 }}
-        ellipsis={{ rows: 2, expandable: true, symbol: "more" }}
-      >
-         Ant Design, a design language for
-        background applications, is refined by Ant UED Team. Ant Design, a
-        design language for background applications, is refined by Ant UED Team.
-        Ant Design, a design language for background applications, is refined by
-        Ant UED Team. Ant Design, a design language for background applications,
-        is refined by Ant UED Team. Ant Design, a design language for background
-        applications, is refined by Ant UED Team. Ant Design, a design language
-        for background applications, is refined by Ant UED Team.
-      </Paragraph>
-
-      <Link to="/comments">View all comments</Link>
-
-      <Row align='middle'>
-        <Col span={2}>
-          <PostAvatar  size='large' src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-        </Col>
-        <Col span={22} >
-          <Form name="horizontal_login" layout="inline" onFinish={onFinish}>
-            <Form.Item style={{ width: "100%" }} name="comment">
-              <Input
-                value={newComment}
-                placeholder="Write a caption..."
-                onChange={(e) => setNewComment(e.target.value)}
-                suffix={
-                  <Button
-                    type="link"
-                    htmlType="submit"
-                    disabled={!newComment ? true : false}
-                  >
-                    Post
-                  </Button>
-                }
-              />
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
+        <Row align="middle">
+          <Col span={2} style={{ marginRight: "5px" }}>
+            <PostAvatar size="large" src={user.profileImage} />
+          </Col>
+          <Col span={21}>
+            <Form name="horizontal_login" layout="inline" onFinish={onFinish}>
+              <Form.Item style={{ width: "100%" }} name="comment">
+                <Input
+                  value={newComment}
+                  placeholder="Add comment..."
+                  onChange={(e) => setNewComment(e.target.value)}
+                  suffix={
+                    <Button
+                      type="link"
+                      htmlType="submit"
+                      disabled={!newComment ? true : false}
+                    >
+                      Post
+                    </Button>
+                  }
+                />
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
       </PostDetailsWrapper>
     </PostWrapper>
   );
