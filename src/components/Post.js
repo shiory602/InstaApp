@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import { Image, Row, Col, Typography, Avatar, Form, Input, Button } from "antd";
 import { HeartOutlined, MessageOutlined } from "@ant-design/icons";
@@ -31,10 +32,6 @@ const PostDetailsWrapper = styled.div`
 
 const Post = () => {
   const [newComment, setNewComment] = useState('');
-
-  // To disable submit button at the beginning.
-  // useEffect(() => {
-  //   }, []);
 
   const onFinish = () => {
     console.log("Finish:", newComment);
@@ -83,7 +80,7 @@ const Post = () => {
         for background applications, is refined by Ant UED Team.
       </Paragraph>
 
-      <a href="#">View all comments</a>
+      <Link to="/comments">View all comments</Link>
 
       {/* <Input placeholder="Basic usage" /> */}
       <Row align='middle'>
