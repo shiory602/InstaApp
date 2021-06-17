@@ -1,10 +1,12 @@
+import FetchContextProvider from './context/Context';
+import Comments from './Comments';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      hello
-    </div>
+    <FetchContextProvider>
+      <Comments />
+    </FetchContextProvider>
   );
 }
 
