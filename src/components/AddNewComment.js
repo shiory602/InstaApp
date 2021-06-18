@@ -11,23 +11,26 @@ const PostAvatar = styled(Avatar)`
   height: 100%;
 `;
 
-const AddNewComment = ({addNewComment}) => {
-    const { user } = useUserContext();
-    const [form] = Form.useForm();
+const AddNewComment = ({comments, setComments}) => {
+  const { user } = useUserContext();
+  const [form] = Form.useForm();
 
-    const onFinish = (values) => {
-        if(!values.comment || values.comment === '') return;
-        const newComment = { 
-          id: uuidv4(),
-          owner: user,
-          message: values.comment,
-          publishDate: new Date(Date.now()).toISOString()
-         }
-        console.log("Finish:", newComment);
-         addNewComment(newComment);
-        form.resetFields();
-      };
+  const onFinish = (values) => {
+      if(!values.comment || values.comment === '') return;
+      const newComment = { 
+        id: uuidv4(),
+        owner: user,
+        message: values.comment,
+        publishDate: new Date(Date.now()).toISOString()
+        }
+      console.log("Finish:", newComment);
+        addNewComment(newComment);
+      form.resetFields();
+    };
 
+    const addNewComment = (newComment) => {
+      setComments([newComment, ...comments]);
+    }
 
   return (
     <>

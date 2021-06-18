@@ -14,9 +14,6 @@ function Comments() {
     .catch(console.error);
   },[]);
 
-  const addNewComment = (newComment) => {
-    setComments([newComment, ...comments]);
-  }
   return (
     <>
       <PageHeader
@@ -43,7 +40,7 @@ function Comments() {
             </List.Item>
           )}
         />}
-      <AddNewComment addNewComment={addNewComment}/>
+      <AddNewComment comments={comments} setComments={setComments}/>
     </>
   );
 }

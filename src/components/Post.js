@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import { Image, Row, Col, Typography, Avatar } from "antd";
@@ -43,25 +44,11 @@ const PostUserWrapper = styled(Row)`
 const Post = ({ post }) => {
   const [comments, setComments] = useState();
 
-    useEffect(()=>{
-        const uri = `https://dummyapi.io/data/api/post/${post.id}/comment?limit=10`;
-        let h = new Headers();
-        h.append('app-id', '60cbc53bea9ef7bbdc44dd76');
-        let req = new Request(uri, {
-            method: 'GET',
-            headers: h,
-            mode: 'cors'
-        })
-        fetch(req).then(response => {
-            if(response.ok){
-                return response.json();
-            }
-        }).then( d => {
-            setComments(d.data);
-        }).catch( error => {
-            console.error(error);
-        })
-    },[]);
+  useEffect(()=>{
+    axios.get(`https://dummyapi.io/data/api/post/${post.id}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID } })
+    .then(({ data }) => setComments(data.data))
+    .catch(console.error);
+  },[]);
 
   return (
     <PostWrapper>
@@ -114,7 +101,7 @@ const Post = ({ post }) => {
           ""
         )}
 
-     <AddNewComment/>
+      <AddNewComment comments={comments} setComments={setComments}/>
       </PostDetailsWrapper>
     </PostWrapper>
   );
