@@ -1,13 +1,16 @@
-import React, { createContext, useState, useContext} from 'react';
+import React, { createContext, useState, useContext, useEffect} from 'react';
+import axios from "axios";
 
 const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
-    const [user, setUser] = useState({
-        id: 'happy_doggy-1',
-        username: 'happy_doggy',
-        profileImage: 'https://source.unsplash.com/2l0CWTpcChI/900x900'
-    });
+    const [user, setUser] = useState();
+    console.log(user)
+    useEffect(()=>{
+        axios.get(`https://dummyapi.io/data/api/user/5aZRSdkcBOM6j3lkWEoP`, { headers: { 'app-id': process.env.REACT_APP_API_ID } })
+            .then(({ data }) => setUser(data))
+            .catch(console.error)
+    },[]);
     return (
         <UserContext.Provider value={{ user }}>
             { children }

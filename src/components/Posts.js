@@ -21,7 +21,8 @@ const Posts = () => {
         title="InstaAPP"
         extra={[<Button key="addPost" type="ghost" icon={<PlusOutlined />} size={"small"} />]}
       />
-      {posts && posts.map(post => <Post key={post.id} post={post} />)}
+      {!posts ? "Loading"
+      : posts.map(post => <Post key={post.id} post={post} />)}
     </>
   );
 };

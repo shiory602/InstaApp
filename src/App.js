@@ -9,16 +9,16 @@ function App() {
   return (
     <Router>
       <UserContextProvider>
+      <PostsContextProvider>
         <Row justify="center">
           <Col xs={{ span: 20 }} lg={{ span: 14 }}>
             <Switch>
-              <PostsContextProvider>
                 <Route path="/" exact component={Posts}/>
-              </PostsContextProvider>
-              <Route path="/comments" exact component={Comments}/>
+                <Route path="/:postId/comments" exact component={Comments}/>
             </Switch>
           </Col>
         </Row>
+        </PostsContextProvider>
       </UserContextProvider>
     </Router>
   );
