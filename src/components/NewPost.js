@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { usePostsContext } from "../context/PostsContext";
+import { useUserContext } from "../context/UserContext";
 import styled from "styled-components";
 import "antd/dist/antd.css";
 import { Row, Col, PageHeader, Avatar, Input, Form, Button, Switch, Upload } from "antd";
@@ -18,9 +19,10 @@ const { TextArea } = Input;
 //     owner: model(ref:User)
 //     };
 const NewPost = () => {
+    const { user } = useUserContext();
     const [caption, setCaption] = useState('');
     const {dispatch} = usePostsContext();
-
+    console.log(user)
     /*--------------------
     image submit
     ---------------------*/
@@ -59,7 +61,8 @@ const NewPost = () => {
     };
     
     return (
-        <>
+        <>{user &&
+        
         <Form onFinish={onFinish}>
             <PageHeader
                 className="site-page-header"
@@ -79,7 +82,7 @@ const NewPost = () => {
                 ]}
             />
             <hr />
-            <Form.Item>
+            <Form.Item style={{ marginTop: '30px' }}>
                 <ImgCrop rotate>
                     <Upload
                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -94,9 +97,9 @@ const NewPost = () => {
             <hr />
             <CommentRow align='middle'>
                 <Col span={2}>
-                <Avatar  size='large' src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+                <Avatar size={68} src={user.picture} />
                 </Col>
-                <Col span={22} >
+                <Col span={20} style={{ marginTop: '18px', marginLeft: '28px' }}>
                     <Form.Item style={{ width: "100%" }} name="comment">
                     <TextArea
                         value={caption}
@@ -129,7 +132,8 @@ const NewPost = () => {
             </SNSRow>
             <hr />
         </Form>
-        </>
+        
+    }</> 
     )
 }
 
