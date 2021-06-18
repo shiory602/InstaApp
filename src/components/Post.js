@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "antd/dist/antd.css";
-import { Image, Row, Col, Typography, Avatar, Form, Input, Button } from "antd";
+import { Image, Row, Col, Typography, Avatar } from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
 import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
 
 import styled from "styled-components";
 
-import { useUserContext } from "../context/UserContext";
+import AddNewComment from "./AddNewComment";
 
 const { Text } = Typography;
 
@@ -41,16 +41,7 @@ const PostUserWrapper = styled(Row)`
 `;
 
 const Post = ({ post }) => {
-  const { user } = useUserContext();
-
-  const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState();
-  const onFinish = () => {
-    console.log("Finish:", newComment);
-    setNewComment("");
-  };
-  console.log("render" + newComment);
-  console.log("POST " + user);
 
     useEffect(()=>{
         const uri = `https://dummyapi.io/data/api/post/${post.id}/comment?limit=10`;
@@ -108,38 +99,22 @@ const Post = ({ post }) => {
             {post.text}
           </Paragraph>
         </Row>
-        <Paragraph style={{ margin: 0 }}>{post.publishDate}</Paragraph>
+        <Paragraph style={{ margin: 0 }}>
+          {new Intl.DateTimeFormat("en-US", {
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric"
+                    }).format(new Date(post.publishDate))}
+        </Paragraph>
         {(comments && comments.length) > 0 ? (
           <Link to={`/${post.id}/comments`}>View all comments</Link>
         ) : (
           ""
         )}
 
-        <Row align="middle">
-          <Col span={2} style={{ marginRight: "5px" }}>
-            <PostAvatar size="large" src={user.profileImage} />
-          </Col>
-          <Col span={21}>
-            <Form name="horizontal_login" layout="inline" onFinish={onFinish}>
-              <Form.Item style={{ width: "100%" }} name="comment">
-                <Input
-                  value={newComment}
-                  placeholder="Add comment..."
-                  onChange={(e) => setNewComment(e.target.value)}
-                  suffix={
-                    <Button
-                      type="link"
-                      htmlType="submit"
-                      disabled={!newComment ? true : false}
-                    >
-                      Post
-                    </Button>
-                  }
-                />
-              </Form.Item>
-            </Form>
-          </Col>
-        </Row>
+     <AddNewComment/>
       </PostDetailsWrapper>
     </PostWrapper>
   );
