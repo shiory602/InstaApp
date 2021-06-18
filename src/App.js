@@ -4,7 +4,6 @@ import PostsContextProvider from "./context/PostsContext";
 import Comments from "./components/Comments";
 import Posts from "./components/Posts";
 import NewPost from "./components/NewPost";
-import Comments from "./components/Comments";
 import { Row, Col } from "antd";
 
 function App() {
@@ -15,10 +14,10 @@ function App() {
           <Col xs={{ span: 20 }} lg={{ span: 14 }}>
             <Switch>
               <PostsContextProvider>
-                <Route path="/" exact component={Posts}/>
+                <Route exact path="(/)?" component={Posts}/>
+                <Route path="/NewPost" component={NewPost} />
               </PostsContextProvider>
-              <Route path="/newPost" exact component={NewPost} />
-              <Route path="/comments" exact component={Comments}/>
+              <Route path="/comments" component={Comments}/>
             </Switch>
           </Col>
         </Row>
