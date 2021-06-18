@@ -8,6 +8,7 @@ import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
 
 import styled from "styled-components";
 
+import { useUserContext } from "../context/UserContext";
 import AddNewComment from "./AddNewComment";
 
 const { Text } = Typography;
@@ -43,12 +44,22 @@ const PostUserWrapper = styled(Row)`
 
 const Post = ({ post }) => {
   const [comments, setComments] = useState();
+  const { state, dispatch } = useUserContext();
+
 
   useEffect(()=>{
     axios.get(`https://dummyapi.io/data/api/post/${post.id}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID } })
     .then(({ data }) => setComments(data.data))
     .catch(console.error);
   },[]);
+
+  const like = () => {
+    dispatch({type: 'LIKE', postId: post.id});
+  }
+
+  const unlike = () => {
+    dispatch({type: 'UNLIKE', postId: post.id})
+  }
 
   return (
     <PostWrapper>
@@ -65,11 +76,11 @@ const Post = ({ post }) => {
         <Row align="middle">
           <Icon>
             <HeartOutlined />
-            {/* {post.likes.includes(user.username) ? (
-              <HeartFilled />
-            ) : (
-              <HeartOutlined />
-            )} */}
+            {state.likedPosts.includes(post.id) ? (
+              <HeartFilled onClick={unlike}/>
+              ) : (
+              <HeartOutlined onClick={like}/>
+            )}
           </Icon>
           <Icon>
             <MessageOutlined href="/comments" />

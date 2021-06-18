@@ -11,7 +11,7 @@ const PostHeader = styled(PageHeader)`
 `;
 
 const Posts = () => {
-  const { posts } = usePostsContext();
+  const { posts, loading } = usePostsContext();
 
   return (
     <>
@@ -21,10 +21,11 @@ const Posts = () => {
         title="InstaAPP"
         extra={[<Button key="addPost" type="ghost" icon={<PlusOutlined />} size={"small"} />]}
       />
-      {!posts ? "Loading"
-      : posts.map(post => <Post key={post.id} post={post} />)}
+      {loading && "Loading"}
+      {posts && posts.map(post => <Post key={post.id} post={post} />)}
     </>
   );
 };
 
 export default Posts;
+
