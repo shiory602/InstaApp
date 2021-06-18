@@ -33,8 +33,9 @@ const AddNewComment = ({comments, setComments}) => {
     }
 
   return (
-    <>{ user &&
-      <Row align="middle">
+    <>
+      { user &&
+        <Row align="middle">
           <Col span={2} style={{ marginRight: "5px" }}>
             <PostAvatar size="large" src={user.picture} />
           </Col>
@@ -57,7 +58,7 @@ const AddNewComment = ({comments, setComments}) => {
             </Form>
           </Col>
         </Row>
-}
+      }
     </>
   );
 }
