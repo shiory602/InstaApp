@@ -40,7 +40,7 @@ function Comments() {
             </List.Item>
           )}
         />}
-      <AddNewComment comments={comments} setComments={setComments}/>
+      <AddNewComment comments={comments} setComments={setComments} postId={postId} />
     </>
   );
 }

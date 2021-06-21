@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useUserContext } from "../context/UserContext";
 import { Row, Col, Form, Input, Button, Avatar } from "antd";
 import styled from "styled-components";
@@ -11,9 +11,16 @@ const PostAvatar = styled(Avatar)`
   height: 100%;
 `;
 
-const AddNewComment = ({comments, setComments}) => {
+const AddNewComment = ({comments, setComments, postId}) => {
   const { user } = useUserContext();
   const [form] = Form.useForm();
+  const [localData, setLocalData] = useState([]);
+
+  const setData = (newComment, prevComments) => {
+    setLocalData(newComment, ...prevComments)
+    console.log(localData)
+  }
+
 
   const onFinish = (values) => {
       if(!values.comment || values.comment === '') return;
@@ -24,13 +31,23 @@ const AddNewComment = ({comments, setComments}) => {
         publishDate: new Date(Date.now()).toISOString()
         }
       console.log("Finish:", newComment);
-        addNewComment(newComment);
+      
+      setData(newComment, ...comments);
+      addNewComment(newComment);
       form.resetFields();
     };
 
     const addNewComment = (newComment) => {
       setComments([newComment, ...comments]);
     }
+
+    useEffect(() => {
+      if (localData.length !== 0) {
+        const json = JSON.stringify(localData); //文字列 ← オブジェクト
+        window.localStorage.setItem(postId, json); // 保存
+      }
+    }, [localData])
+
 
   return (
     <>
