@@ -3,10 +3,9 @@ import { usePostsContext } from "../context/PostsContext";
 import { useUserContext } from "../context/UserContext";
 import styled from "styled-components";
 import "antd/dist/antd.css";
-import { Row, Col, PageHeader, Avatar, Input, Form, Button, Switch, Upload } from "antd";
+import { Row, Col, PageHeader, Avatar, Input, Form, Button, Upload } from "antd";
 import ImgCrop from 'antd-img-crop';
 import { CheckOutlined } from "@ant-design/icons";
-import Paragraph from 'antd/lib/typography/Paragraph';
 import LoggedOut from './LoggedOut';
 import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -103,7 +102,7 @@ const NewPost = () => {
                 ]}
             />
             <hr />
-            <Form.Item key={"newpost-image"}>
+            <Form.Item key={"newpost-image"} style={{ marginTop: '30px' }}>
                 <ImgCrop rotate>
                     <Upload
                         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"

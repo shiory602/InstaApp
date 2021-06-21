@@ -5,9 +5,7 @@ const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
     const [user, setUser] = useState();
-
     useEffect(()=>{
-        console.log("USER CONTEXT FETCH");
         axios.get(`https://dummyapi.io/data/api/user/5aZRSdkcBOM6j3lkWEoP`, { headers: { 'app-id': process.env.REACT_APP_API_ID } })
             .then(({ data }) => setUser(data))
             .catch(console.error)

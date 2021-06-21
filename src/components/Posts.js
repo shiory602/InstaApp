@@ -15,7 +15,6 @@ const Header = styled(PageHeader)`
 const Posts = () => {
   const { state } = usePostsContext();
   const { user } = useUserContext();
-  console.log(state.posts);
   return user ? (
     <>
       <Header

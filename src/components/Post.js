@@ -46,11 +46,11 @@ const Post = ({ post }) => {
   const [comments, setComments] = useState();
   const { state, dispatch } = usePostsContext();
 
-  // useEffect(()=>{
-  //   axios.get(`https://dummyapi.io/data/api/post/${post.id}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID1 } })
-  //   .then(({ data }) => setComments(data.data))
-  //   .catch(console.error);
-  // },[]);
+  useEffect(()=>{
+    axios.get(`https://dummyapi.io/data/api/post/${post.id}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID } })
+    .then(({ data }) => setComments(data.data))
+    .catch(console.error);
+  },[]);
 
   const like = () => {
       dispatch({type: 'LIKE', postId: post.id});
@@ -104,11 +104,11 @@ const Post = ({ post }) => {
                       day: "numeric"
                     }).format(new Date(post.publishDate))}
         </Paragraph>
-        {/* {(comments && comments.length) > 0 ? (
+        {(comments && comments.length) > 0 ? (
           <Link to={`/${post.id}/comments`}>View all comments</Link>
         ) : (
           ""
-        )} */}
+        )}
       <AddNewComment comments={comments} setComments={setComments}/>
       </PostDetailsWrapper>
     </PostWrapper>
