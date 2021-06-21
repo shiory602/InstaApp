@@ -28,6 +28,7 @@ const PostsReducer = (state, action) => {
       p = state.myPosts
         ? [...action.posts, ...state.myPosts]
         : [...action.posts];
+      localStorage.setItem("posts", JSON.stringify(p));
       return {
         posts: p,
         myPosts: state.myPosts,
@@ -35,13 +36,21 @@ const PostsReducer = (state, action) => {
         loading: false,
       };
     case "LIKE":
-      liked = state.likedPosts
+      liked = state.likedPosts && !state.likedPosts.includes(action.postId)
         ? [...state.likedPosts, action.postId]
         : [action.postId];
       localStorage.setItem("likedPosts", JSON.stringify(liked));
       return {
         likedPosts: liked,
-        myPosts: state.myPosts,
+        myPosts: state.myPosts && state.myPosts !== null && state.myPosts.map((p) => {
+            if (p.id === action.postId) {
+              return {
+                ...p,
+                likes: p.likes++,
+              };
+            }
+            return p;
+          }),
         posts: state.posts.map((p) => {
           if (p.id === action.postId) {
             return {
@@ -55,10 +64,17 @@ const PostsReducer = (state, action) => {
     case "UNLIKE":
       liked = state.likedPosts.filter((lp) => lp !== action.postId);
       localStorage.setItem("likedPosts", JSON.stringify(liked));
-
       return {
         likedPosts: liked,
-        myPosts: state.myPosts,
+        myPosts: state.myPosts.map((mp) => {
+            if (mp.id === action.postId) {
+              return {
+                ...mp,
+                likes: mp.likes--,
+              };
+            }
+            return mp;
+          }),
         posts: state.posts.map((p) => {
           if (p.id === action.postId) {
             return {
@@ -81,11 +97,15 @@ const PostsContextProvider = ({ children }) => {
     dispatch({ type: "LOADING" });
     axios
       .get(`https://dummyapi.io/data/api/post?limit=10`, {
-        headers: { "app-id": process.env.REACT_APP_API_ID },
+        headers: { "app-id": process.env.REACT_APP_API_ID2 },
       })
       .then(({ data }) => dispatch({ type: "ADD_POSTS", posts: data.data }))
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("myPosts", JSON.stringify(state.myPosts));
+  },[state.myPosts]);
 
   return (
     <PostsContext.Provider value={{ state, dispatch }}>

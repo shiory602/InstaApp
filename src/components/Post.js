@@ -59,7 +59,6 @@ const Post = ({ post }) => {
   const unlike = () => {
       dispatch({type: 'UNLIKE', postId: post.id});
   }
-
   return (
     <PostWrapper>
       <PostUserWrapper align="middle">
@@ -74,7 +73,7 @@ const Post = ({ post }) => {
       <PostDetailsWrapper>
         <Row align="middle">
           <Icon>
-            {state.likedPosts !== null && state.likedPosts.includes(post.id) ? (
+            {state.likedPosts && state.likedPosts !== null && state.likedPosts.includes(post.id) ? (
               <HeartFilled onClick={unlike}/>
               ) : (
               <HeartOutlined onClick={like}/>
