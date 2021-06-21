@@ -9,9 +9,10 @@ function Comments() {
   const [comments, setComments] = useState();
 
   useEffect(()=>{
-    axios.get(`https://dummyapi.io/data/api/post/${postId}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID } })
-    .then(({ data }) => setComments(data.data))
-    .catch(console.error);
+    console.log("COMMENTS FETCH");
+    // axios.get(`https://dummyapi.io/data/api/post/${postId}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID2 } })
+    // .then(({ data }) => setComments(data.data))
+    // .catch(console.error);
   },[]);
 
   return (

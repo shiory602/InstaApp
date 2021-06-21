@@ -8,8 +8,8 @@ import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
 
 import styled from "styled-components";
 
-import { useUserContext } from "../context/UserContext";
 import AddNewComment from "./AddNewComment";
+import { usePostsContext } from "../context/PostsContext";
 
 const { Text } = Typography;
 
@@ -44,21 +44,20 @@ const PostUserWrapper = styled(Row)`
 
 const Post = ({ post }) => {
   const [comments, setComments] = useState();
-  const { state, dispatch } = useUserContext();
+  const { state, dispatch } = usePostsContext();
 
-
-  useEffect(()=>{
-    axios.get(`https://dummyapi.io/data/api/post/${post.id}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID } })
-    .then(({ data }) => setComments(data.data))
-    .catch(console.error);
-  },[]);
+  // useEffect(()=>{
+  //   axios.get(`https://dummyapi.io/data/api/post/${post.id}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID1 } })
+  //   .then(({ data }) => setComments(data.data))
+  //   .catch(console.error);
+  // },[]);
 
   const like = () => {
-    dispatch({type: 'LIKE', postId: post.id});
+      dispatch({type: 'LIKE', postId: post.id});
   }
 
   const unlike = () => {
-    dispatch({type: 'UNLIKE', postId: post.id})
+      dispatch({type: 'UNLIKE', postId: post.id});
   }
 
   return (
@@ -75,8 +74,7 @@ const Post = ({ post }) => {
       <PostDetailsWrapper>
         <Row align="middle">
           <Icon>
-            <HeartOutlined />
-            {state.likedPosts.includes(post.id) ? (
+            {state.likedPosts !== null && state.likedPosts.includes(post.id) ? (
               <HeartFilled onClick={unlike}/>
               ) : (
               <HeartOutlined onClick={like}/>
@@ -90,12 +88,12 @@ const Post = ({ post }) => {
         <Paragraph style={{ margin: 0 }}> {post.likes} likes </Paragraph>
         <Row>
           <Text strong style={{paddingRight: "5px"}}>{post.owner.firstName} {post.owner.lastName}</Text>
-          <Paragraph
+          {post.text && <Paragraph
             style={{ margin: 0 }}
             ellipsis={{ rows: 2, expandable: true, symbol: "more" }}
           >
             {post.text}
-          </Paragraph>
+          </Paragraph>}
         </Row>
         <Paragraph style={{ margin: 0 }}>
           {new Intl.DateTimeFormat("en-US", {
@@ -106,12 +104,11 @@ const Post = ({ post }) => {
                       day: "numeric"
                     }).format(new Date(post.publishDate))}
         </Paragraph>
-        {(comments && comments.length) > 0 ? (
+        {/* {(comments && comments.length) > 0 ? (
           <Link to={`/${post.id}/comments`}>View all comments</Link>
         ) : (
           ""
-        )}
-
+        )} */}
       <AddNewComment comments={comments} setComments={setComments}/>
       </PostDetailsWrapper>
     </PostWrapper>

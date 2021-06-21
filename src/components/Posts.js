@@ -5,27 +5,38 @@ import { PlusOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import Post from "./Post";
 import { usePostsContext } from "../context/PostsContext";
+import LoggedOut from "./LoggedOut";
+import { useUserContext } from "../context/UserContext";
 
-const PostHeader = styled(PageHeader)`
+const Header = styled(PageHeader)`
   padding: 10px 0 0 0;
 `;
 
 const Posts = () => {
-  const { posts, loading } = usePostsContext();
-
-  return (
+  const { state } = usePostsContext();
+  const { user } = useUserContext();
+  console.log(state.posts);
+  return user ? (
     <>
-      <PostHeader
+      <Header
         ghost={false}
-        // onBack={() => window.history.back()}
         title="InstaAPP"
-        extra={[<Button key="addPost" type="ghost" icon={<PlusOutlined />} size={"small"} />]}
+        extra={[
+          <Button
+            href="/NewPost"
+            key="addPost"
+            type="ghost"
+            icon={<PlusOutlined />}
+            size={"small"}
+          />
+        ]}
       />
-      {loading && "Loading"}
-      {posts && posts.map(post => <Post key={post.id} post={post} />)}
+      {state.loading && "Loading"}
+      {state.posts && state.posts.map((post) => <Post key={post.id} post={post} />)}
     </>
+  ) : (
+    <LoggedOut />
   );
 };
 
 export default Posts;
-
