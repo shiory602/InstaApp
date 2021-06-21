@@ -19,7 +19,7 @@ const Posts = () => {
         ghost={false}
         // onBack={() => window.history.back()}
         title="InstaAPP"
-        extra={[<Button key="addPost" type="ghost" icon={<PlusOutlined />} size={"small"} />]}
+        extra={[<Button href="/NewPost" key="addPost" type="ghost" icon={<PlusOutlined />} size={"small"} />]}
       />
       {!posts ? "Loading"
       : posts.map(post => <Post key={post.id} post={post} />)}

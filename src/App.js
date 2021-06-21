@@ -3,6 +3,7 @@ import UserContextProvider from "./context/UserContext";
 import PostsContextProvider from "./context/PostsContext";
 import Comments from "./components/Comments";
 import Posts from "./components/Posts";
+import NewPost from "./components/NewPost";
 import { Row, Col } from "antd";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Col xs={{ span: 20 }} lg={{ span: 14 }}>
             <Switch>
                 <Route path="/" exact component={Posts}/>
+                <Route path="/NewPost" component={NewPost} />
                 <Route path="/:postId/comments" exact component={Comments}/>
             </Switch>
           </Col>
