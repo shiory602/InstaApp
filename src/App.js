@@ -9,19 +9,20 @@ import { Row, Col } from "antd";
 function App() {
   return (
     <Router>
-      <UserContextProvider>
-      <PostsContextProvider>
         <Row justify="center">
           <Col xs={{ span: 20 }} lg={{ span: 14 }}>
             <Switch>
+            <UserContextProvider>
+              <PostsContextProvider>
                 <Route path="/" exact component={Posts}/>
                 <Route path="/NewPost" component={NewPost} />
                 <Route path="/:postId/comments" exact component={Comments}/>
+              </PostsContextProvider>
+            </UserContextProvider>
             </Switch>
           </Col>
         </Row>
-        </PostsContextProvider>
-      </UserContextProvider>
+       
     </Router>
   );
 }

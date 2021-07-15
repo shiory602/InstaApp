@@ -4,7 +4,7 @@ import { Row, Col, Form, Input, Button, Avatar } from "antd";
 import styled from "styled-components";
 import { v4 as uuidv4 } from 'uuid';
 
-const PostAvatar = styled(Avatar)`
+const UserAvatar = styled(Avatar)`
   margin: 5px 0;
   object-fit: cover;
   width: 100%;
@@ -20,7 +20,6 @@ const AddNewComment = ({comments, setComments, postId}) => {
     setLocalData(newComment, ...prevComments)
     console.log(localData)
   }
-
 
   const onFinish = (values) => {
       if(!values.comment || values.comment === '') return;
@@ -54,7 +53,7 @@ const AddNewComment = ({comments, setComments, postId}) => {
       { user &&
         <Row align="middle">
           <Col span={2} style={{ marginRight: "5px" }}>
-            <PostAvatar size="large" src={user.picture} />
+            <UserAvatar size="large" src={user.picture} />
           </Col>
           <Col span={21}>
             <Form name="add_new_comment" layout="inline" form={form} onFinish={onFinish}>

@@ -9,6 +9,7 @@ import { HeartFilled, HeartOutlined, MessageOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 
 import AddNewComment from "./AddNewComment";
+import { usePostsContext } from "../context/PostsContext";
 
 const { Text } = Typography;
 
@@ -43,6 +44,7 @@ const PostUserWrapper = styled(Row)`
 
 const Post = ({ post }) => {
   const [comments, setComments] = useState();
+  const { state, dispatch } = usePostsContext();
 
   useEffect(()=>{
     axios.get(`https://dummyapi.io/data/api/post/${post.id}/comment`, { headers: { 'app-id': process.env.REACT_APP_API_ID } })
@@ -50,6 +52,13 @@ const Post = ({ post }) => {
     .catch(console.error);
   },[]);
 
+  const like = () => {
+      dispatch({type: 'LIKE', postId: post.id});
+  }
+
+  const unlike = () => {
+      dispatch({type: 'UNLIKE', postId: post.id});
+  }
   return (
     <PostWrapper>
       <PostUserWrapper align="middle">
@@ -64,12 +73,11 @@ const Post = ({ post }) => {
       <PostDetailsWrapper>
         <Row align="middle">
           <Icon>
-            <HeartOutlined />
-            {/* {post.likes.includes(user.username) ? (
-              <HeartFilled />
-            ) : (
-              <HeartOutlined />
-            )} */}
+            {state.likedPosts && state.likedPosts !== null && state.likedPosts.includes(post.id) ? (
+              <HeartFilled onClick={unlike}/>
+              ) : (
+              <HeartOutlined onClick={like}/>
+            )}
           </Icon>
           <Icon>
             <MessageOutlined href="/comments" />
@@ -79,12 +87,12 @@ const Post = ({ post }) => {
         <Paragraph style={{ margin: 0 }}> {post.likes} likes </Paragraph>
         <Row>
           <Text strong style={{paddingRight: "5px"}}>{post.owner.firstName} {post.owner.lastName}</Text>
-          <Paragraph
+          {post.text && <Paragraph
             style={{ margin: 0 }}
             ellipsis={{ rows: 2, expandable: true, symbol: "more" }}
           >
             {post.text}
-          </Paragraph>
+          </Paragraph>}
         </Row>
         <Paragraph style={{ margin: 0 }}>
           {new Intl.DateTimeFormat("en-US", {
@@ -100,7 +108,6 @@ const Post = ({ post }) => {
         ) : (
           ""
         )}
-
       <AddNewComment comments={comments} setComments={setComments}/>
       </PostDetailsWrapper>
     </PostWrapper>
